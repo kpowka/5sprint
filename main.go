@@ -43,7 +43,6 @@ func (t Training) Calories() float64 {
 
 // InfoMessage содержит информацию о проведенной тренировке.
 type InfoMessage struct {
-	// добавьте необходимые поля в структуру
 	TrainingType string        // тип тренировки
 	Duration     time.Duration // длительность тренировки
 	Distance     float64       // расстояние, которое преодолел пользователь
@@ -79,7 +78,6 @@ func (i InfoMessage) String() string {
 
 // CaloriesCalculator интерфейс для структур: Running, Walking и Swimming.
 type CaloriesCalculator interface {
-	// добавьте необходимые методы в интерфейс
 	Calories() float64
 	TrainingInfo() InfoMessage
 }
@@ -92,7 +90,6 @@ const (
 
 // Running структура, описывающая тренировку Бег.
 type Running struct {
-	// добавьте необходимые поля в структуру
 	Training
 }
 
@@ -101,10 +98,8 @@ type Running struct {
 // ((18 * средняя_скорость_в_км/ч + 1.79) * вес_спортсмена_в_кг / м_в_км * время_тренировки_в_часах * мин_в_часе)
 // Это переопределенный метод Calories() из Training.
 func (r Running) Calories() float64 {
-	// вставьте ваш код ниже
 	a := (CaloriesMeanSpeedMultiplier*r.meanSpeed() + CaloriesMeanSpeedMultiplier) * r.Weight
-	b := float64(MInKm)
-
+	b := float64(MInKm) // разделил код для удобства в чтении(ревьюер, напиши если я ошибаюсь в видении)
 	return a / b * float64(r.Duration.Hours()) * MinInHours
 }
 
@@ -133,7 +128,6 @@ const (
 
 // Walking структура описывающая тренировку Ходьба
 type Walking struct {
-	// добавьте необходимые поля в структуру
 	Training
 	Height float64 // рост пользователя
 }
@@ -145,11 +139,11 @@ type Walking struct {
 // Это переопределенный метод Calories() из Training.
 func (w Walking) Calories() float64 {
 
-	speedSec := (w.meanSpeed() * KmHInMsec)  // средняя скорость в секундах
-	expo := 2                                // квдрат
-	res := math.Pow(speedSec, float64(expo)) // средняя скорость в квадрате
+	speedSec := (w.meanSpeed() * KmHInMsec) // средняя скорость в секундах
+	pow := 2                                // квдрат
+	res := math.Pow(speedSec, float64(pow)) // средняя скорость в квадрате
 	a := (CaloriesWeightMultiplier*w.Weight + (res/w.Height)*CaloriesSpeedHeightMultiplier*w.Weight)
-	b := (w.Duration.Hours() * MinInHours)
+	b := (w.Duration.Hours() * MinInHours) // так же разделил расчеты по групам
 	return a * b
 }
 
